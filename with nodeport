@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    name:  my-label
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: my-label
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: my-label
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec: 
+  selector:
+    name: my-label
+  ports:
+  - port: 80
+    targetPort: 80  
+  type: NodePor
